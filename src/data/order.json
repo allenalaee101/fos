@@ -1,0 +1,16 @@
+[
+  {
+    "id":1,
+    "customer":{"id":101,"name":"Alice"},
+    "food":{"id":1,"name":"Burger","type":"Fast Food","price":5.99,"description":"Juicy beef burger with lettuce and tomato"},
+    "quantity":2,
+    "notes":"No onions"
+  },
+  {
+    "id":2,
+    "customer":{"id":102,"name":"Bob"},
+    "food":{"id":2,"name":"Pizza","type":"Italian","price":8.5,"description":"Cheese pizza with tomato sauce"},
+    "quantity":1,
+    "notes":"Extra cheese"
+  }
+]

@@ -1,8 +1,10 @@
-import { Food } from "./Food";
+import type { Food } from "./Food";
+import type { BasePerson } from "./BasePerson";
 
 export interface Order {
   id: number;
-  customerId: { id: number; name: string };
-  food: Food[];
-  note?: string;
+  customer: BasePerson;
+  food: Food;
+  quantity: number;
+  notes?: string;
 }

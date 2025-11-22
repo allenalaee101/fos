@@ -3,4 +3,5 @@ export type Food = {
   name: string;
   price: number;
   type: string;
+  description: string;
 };

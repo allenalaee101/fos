@@ -4,7 +4,7 @@
 
     <v-select
       v-model="selectedFood"
-      :items="foods"
+      :items="food"
       item-title="name"
       item-value="id"
       label="Select Food"
@@ -21,12 +21,13 @@
 /* global defineEmits */
 import { ref } from "vue";
 import { useMenu } from "../composable/useMenu";
+import type { Food } from "../models/Food";
 
 const emit = defineEmits(["order-created"]);
-const { foods } = useMenu();
+const { food } = useMenu();
 
 const customerName = ref("");
-const selectedFood = ref(null);
+const selectedFood = ref<Food | null>(null);
 const notes = ref("");
 
 function submitForm() {
