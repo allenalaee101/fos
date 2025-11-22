@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-4">
+  <v-container class="pa-4 fixed-container">
     <div v-if="!currentUser">
       <v-card class="pa-4" max-width="400">
         <v-card-title>Select Your Role</v-card-title>
@@ -89,3 +89,9 @@ function openDialog(order: Order) {
   dialog.value = true;
 }
 </script>
+<style scoped>
+.fixed-container {
+  min-height: 500px;
+  max-height: 1000px; /* optional */
+}
+</style>
