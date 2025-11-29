@@ -6,7 +6,7 @@ var BasePerson = /** @class */ (function () {
         this.id = id;
         this.name = name;
     }
-    // Optional: Customers place orders
+    // Base person should be initiated and needs subclass for roles and inheritancs so its an class base componant
     BasePerson.prototype.placeOrder = function (orderId, food, note) {
         return {
             id: orderId,

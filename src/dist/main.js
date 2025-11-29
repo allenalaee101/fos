@@ -1,17 +1,4 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 exports.__esModule = true;
 var vue_1 = require("vue");
 var App_vue_1 = require("./App.vue");
@@ -21,25 +8,48 @@ var vuetify_1 = require("vuetify");
 var components = require("vuetify/components");
 var directives = require("vuetify/directives");
 // main.ts
-var resizeObserverLoopErrRe = /^ResizeObserver loop limit exceeded/;
-var nativeResizeObserver = window.ResizeObserver;
-window.ResizeObserver = /** @class */ (function (_super) {
-    __extends(ResizeObserverOverride, _super);
-    function ResizeObserverOverride(callback) {
-        return _super.call(this, function (entries, observer) {
-            try {
-                callback(entries, observer);
-            }
-            catch (err) {
-                // ignore ResizeObserver loop errors
-                if (!resizeObserverLoopErrRe.test(err.message)) {
-                    throw err; // rethrow other errors
-                }
-            }
-        }) || this;
+// Suppress noisy ResizeObserver loop errors (dev overlay spam)
+var isResizeObserverLoopError = function (msg) {
+    return !!msg && msg.includes("ResizeObserver loop completed with undelivered notifications");
+};
+window.addEventListener("error", function (event) {
+    try {
+        if (isResizeObserverLoopError(event === null || event === void 0 ? void 0 : event.message)) {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            console.warn("ResizeObserver warning suppressed");
+        }
     }
-    return ResizeObserverOverride;
-}(nativeResizeObserver));
+    catch (e) {
+        // noop
+    }
+}, true // use capture so this runs before other handlers (webpack overlay)
+);
+window.addEventListener("unhandledrejection", function (event) {
+    try {
+        var reason = (event && event.reason) || "";
+        var message = typeof reason === "string" ? reason : reason && (reason.message || String(reason));
+        if (isResizeObserverLoopError(message)) {
+            event.preventDefault();
+            console.warn("ResizeObserver rejection suppressed");
+        }
+    }
+    catch (e) {
+        // noop
+    }
+}, true);
+var ro = new ResizeObserver(function (entries) {
+    try {
+        for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
+            var entry = entries_1[_i];
+            // handle resize
+            console.log(entry.contentRect.width, entry.contentRect.height);
+        }
+    }
+    catch (err) {
+        // suppress the error
+    }
+});
 var vuetify = vuetify_1.createVuetify({
     components: components,
     directives: directives

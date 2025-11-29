@@ -12,6 +12,35 @@
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
+    <!-- Suppress ResizeObserver dev-overlay error as early as possible -->
+    <script>
+      (function () {
+        try {
+          var isROError = function (msg) {
+            return typeof msg === 'string' && msg.indexOf('ResizeObserver loop completed with undelivered notifications') !== -1;
+          };
+          window.addEventListener('error', function (e) {
+            try {
+              if (isROError(e && e.message)) {
+                e.stopImmediatePropagation && e.stopImmediatePropagation();
+                e.preventDefault && e.preventDefault();
+                console && console.warn && console.warn('ResizeObserver warning suppressed (early)');
+              }
+            } catch (err) {}
+          }, true);
+          window.addEventListener('unhandledrejection', function (e) {
+            try {
+              var reason = (e && e.reason) || '';
+              var msg = typeof reason === 'string' ? reason : (reason && reason.message) || String(reason);
+              if (isROError(msg)) {
+                e.preventDefault && e.preventDefault();
+                console && console.warn && console.warn('ResizeObserver rejection suppressed (early)');
+              }
+            } catch (err) {}
+          }, true);
+        } catch (err) {}
+      })();
+    </script>
     <!-- built files will be auto injected -->
   </body>
 </html>
