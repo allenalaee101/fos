@@ -1,5 +1,16 @@
 [
-  {"id":1,"name":"Burger","type":"Fast Food","price":5.99,"description":"Juicy beef burger with lettuce and tomato"},
-  {"id":2,"name":"Pizza","type":"Italian","price":8.5,"description":"Cheese pizza with tomato sauce"},
-  {"id":3,"name":"Salad","type":"Healthy","price":4.0,"description":"Fresh vegetable salad"}
+  {
+    "id": 1,
+    "name": "Burger",
+    "type": "Fast Food",
+    "price": 5.99,
+    "description": "Juicy beef burger with lettuce and tomato"
+  },
+  {
+    "id": 2,
+    "name": "Pizza",
+    "type": "Italian",
+    "price": 8.5,
+    "description": "Cheese pizza with tomato sauce"
+  }
 ]

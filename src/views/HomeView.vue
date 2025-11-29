@@ -26,6 +26,7 @@
         :orders="orders"
         @open-dialog="openDialog"
       />
+      <ExcelManager v-if="currentUser.getRole() === 'Manager'" />
       <OrderDialog
         :model-value="dialog"
         :order="selectedOrder"
@@ -43,7 +44,7 @@ import { Manager } from "../models/Manager";
 import { useOrder } from "../composable/useOrder";
 import type { Food } from "../models/Food";
 import type { Order } from "../models/Order";
-
+import ExcelManager from "../components/ExcelManager.vue";
 import OrderForm from "../components/OrderForm.vue";
 import OrderTable from "../components/OrderTable.vue";
 import OrderDialog from "../components/OrderDialog.vue";

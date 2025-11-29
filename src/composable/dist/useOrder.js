@@ -10,23 +10,34 @@ var selectedOrder = vue_1.ref(null);
 function useOrder() {
     vue_1.onMounted(function () {
         if (order_json_1["default"] && order_json_1["default"].length) {
-            // Convert JSON customer objects into Customer instances
-            orders.value = order_json_1["default"].map(function (o) { return ({
-                id: nextOrderId++,
-                customer: new Customer_1.Customer(o.customer.id, o.customer.name),
-                food: o.food,
-                quantity: o.quantity,
-                notes: o.notes
-            }); });
+            orders.value = order_json_1["default"].map(function (o) {
+                var foods = Array.isArray(o.food) ? o.food : [o.food];
+                return {
+                    id: nextOrderId++,
+                    customer: new Customer_1.Customer(o.customer.id, o.customer.name),
+                    food: foods.map(function (f) { return ({
+                        id: f.id,
+                        name: f.name,
+                        type: f.type,
+                        price: f.price,
+                        description: f.description
+                    }); }),
+                    quantity: o.quantity,
+                    notes: o.notes
+                };
+            });
         }
     });
-    function createOrder(customer, food, notes) {
-        var _a;
-        var first = food && food.length ? food[0] : null;
-        // Use customer's placeOrder helper, then adjust quantity from the array
-        var order = customer.placeOrder(nextOrderId++, first, notes);
-        // If multiple items were passed, record quantity accordingly
-        order.quantity = (_a = food === null || food === void 0 ? void 0 : food.length) !== null && _a !== void 0 ? _a : 1;
+    function createOrder(customer, foods, notes) {
+        if (!foods || foods.length === 0)
+            throw new Error("Order must have at least one food item");
+        var order = {
+            id: nextOrderId++,
+            customer: customer,
+            food: foods,
+            quantity: foods.length,
+            notes: notes || ""
+        };
         orders.value.push(order);
         return order;
     }

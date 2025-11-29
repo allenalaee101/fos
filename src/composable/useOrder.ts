@@ -1,6 +1,6 @@
 import { ref, onMounted } from "vue";
 import type { Order } from "../models/Order";
-import type { Food } from "../models/Food";
+import type { Food } from "../models/Food"; // only as type
 import { Customer } from "../models/Customer";
 import ordersData from "../data/order.json";
 
@@ -12,27 +12,36 @@ const selectedOrder = ref<Order | null>(null);
 export function useOrder() {
   onMounted(() => {
     if (ordersData && ordersData.length) {
-      // Convert JSON customer objects into Customer instances
-      orders.value = ordersData.map((o) => ({
-        id: nextOrderId++,
-        customer: new Customer(o.customer.id, o.customer.name),
-        food: o.food,
-        quantity: o.quantity,
-        notes: o.notes,
-      }));
+      orders.value = ordersData.map((o) => {
+        const foods: Food[] = Array.isArray(o.food) ? o.food : [o.food];
+
+        return {
+          id: nextOrderId++,
+          customer: new Customer(o.customer.id, o.customer.name),
+          food: foods.map((f: Food) => ({
+            id: f.id,
+            name: f.name,
+            type: f.type,
+            price: f.price,
+            description: f.description,
+          })),
+          quantity: o.quantity,
+          notes: o.notes,
+        } as Order;
+      });
     }
   });
 
-  function createOrder(
-    customer: Customer,
-    food: Food[],
-    notes?: string
-  ): Order {
-    const first = food && food.length ? food[0] : (null as unknown as Food);
-    // Use customer's placeOrder helper, then adjust quantity from the array
-    const order = customer.placeOrder(nextOrderId++, first, notes) as Order;
-    // If multiple items were passed, record quantity accordingly
-    order.quantity = food?.length ?? 1;
+  function createOrder(customer: Customer, foods: Food[], notes?: string): Order {
+    if (!foods || foods.length === 0) throw new Error("Order must have at least one food item");
+
+    const order: Order = {
+      id: nextOrderId++,
+      customer,
+      food: foods,
+      quantity: foods.length,
+      notes: notes || "",
+    };
 
     orders.value.push(order);
     return order;

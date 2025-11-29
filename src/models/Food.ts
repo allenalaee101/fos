@@ -1,7 +1,10 @@
-export type Food = {
-  id: number;
-  name: string;
-  price: number;
-  type: string;
-  description: string;
-};
+
+export class Food {
+  constructor(
+    public id: number,
+    public name: string,
+    public type: string,
+    public price: number,
+    public description: string
+  ) {}
+}

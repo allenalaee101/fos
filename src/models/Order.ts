@@ -4,7 +4,7 @@ import type { BasePerson } from "./BasePerson";
 export interface Order {
   id: number;
   customer: BasePerson;
-  food: Food;
+  food: Food[];
   quantity: number;
   notes?: string;
 }
