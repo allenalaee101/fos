@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"name": "fos @ 6d45790",
+			"uri": "gitlens://7b22726566223a2236643435373930613364396130313337373938626631643862383463353235313930316138333633222c227265706f50617468223a22633a2f416d69722f666f73227d/c:/Amir/fos?{\"ref\":\"6d45790\"}"
+		}
+	],
+	"settings": {
+		"compile-hero.disable-compile-files-on-did-save-code": false
+	}
+}
